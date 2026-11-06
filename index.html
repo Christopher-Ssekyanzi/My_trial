@@ -1,234 +1,209 @@
 <!DOCTYPE html>
-<html lang='en' data-theme='dark'>
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>For Gloria</title>
-    <!-- Modern Fonts -->
+
+    <!-- Preconnect & Classic Editorial Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&display=swap" rel="stylesheet">
-    
-    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css' rel='stylesheet'>
-    <link href='style.css' rel='stylesheet'>
-    
-    <!-- Confetti Library for Economy Features -->
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link href="style.css" rel="stylesheet">
 </head>
 <body>
 
-    <button class='theme-toggle' id='themeToggler' onclick='toggleTheme()'>🌓</button>
-    <button class='side-tab-trigger' onclick='openNav()'>✨</button>
-
-    <div id='memorySidebar'>
-        <div class='gallery-container-inner' style="padding: 20px; text-align: center; height: 100%; display: flex; flex-direction: column;">
-            <h3 class='mb-3'>Our Memories</h3>
-            
-            <div class="d-flex w-100 gap-2 mb-4 justify-content-center">
-                <button type="button" id="tabImages" class="gallery-btn active" onclick="switchGalleryTab('image')">📷 Pictures</button>
-                <button type="button" id="tabVideos" class="gallery-btn" onclick="switchGalleryTab('video')">🎥 Videos</button>
-            </div>
-
-            <audio id="slideshowAudio" src="media/Until_i_found_you.mp3" crossorigin="anonymous" preload="auto" loop></audio>
-            <div id='gallery-media-container' style="flex-grow: 1; display: flex; align-items: center; justify-content: center; margin: 10px 0;"></div>
-            
-            <div class='mt-4 d-flex justify-content-center gap-2 flex-wrap'>
-                <button class='gallery-btn' onclick='prevMedia()'>⬅ Prev</button>
-                <button class='gallery-btn' onclick='nextMedia()'>Next ➡</button>
-                <button class='gallery-btn gallery-btn-primary' id='slideBtn' onclick='toggleSlideshow()'>▶ Play Slideshow</button>
-                <button class='gallery-btn gallery-btn-danger' onclick='closeNav()'>✖ Close</button>
-            </div>
-        </div>
+    <!-- Ambient Rose-Gold & Champagne Background -->
+    <div class="ambient-canvas" aria-hidden="true">
+        <div class="ambient-orb orb-champagne"></div>
+        <div class="ambient-orb orb-rosegold"></div>
+        <div class="ambient-grain"></div>
     </div>
 
-    <div class='hero'>
-        <div class='hero-content'>
-            <h1 class='gloria-text'>Hello Gloria ✨</h1>
-            <p class='spice-statement'>Welcome to your space Gorgeous💐.</p>
-            <div class='minion-badge' id='secretAdminTrigger'>Made with thought 🙂↔️</div>
+    <!-- Minimal Top Navigation -->
+    <header class="top-bar">
+        <div class="brand-mark" id="secretAdminTrigger" title="For Gloria">
+            <span class="brand-dot"></span>
+            <span class="brand-text">For Gloria</span>
         </div>
+        <div class="top-actions">
+            <button type="button" class="text-action-btn" id="revealAllBtn" onclick="revealAllParagraphs()" style="display: none;">
+                Full View
+            </button>
+            <button type="button" class="theme-pill" id="themeToggler" onclick="toggleTheme()" aria-label="Toggle color theme">
+                <span id="themeLabel">Ivory</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hidden Engineer Dashboard (5 taps on "For Gloria" top-left) -->
+    <div id="adminPanel" style="display: none;">
+        <div class="admin-header">
+            <h4>Engineer's Feed</h4>
+            <button type="button" class="admin-close-btn" onclick="document.getElementById('adminPanel').style.display='none'">Close</button>
+        </div>
+        <div id="adminMessages">Waiting for data...</div>
     </div>
 
-    <div class="sky-wrapper">
-        <div class="star-field" id="starField"></div>
-        <div class="content-overlay">
+    <!-- Main Editorial Stage -->
+    <main class="editorial-stage">
 
-            <div class="container py-4">
+        <!-- STAGE 1: Quiet Cover Card -->
+        <section class="cover-card" id="coverScreen">
+            <div class="cover-frame">
+                <div class="monogram-ring">
+                    <span class="monogram-letter">G</span>
+                </div>
+                <p class="eyebrow-label">Two Years &bull; A Quiet Note</p>
+                <h1 class="cover-title">Gloria,</h1>
+                <p class="cover-subtitle">
+                    I wanted to hear your voice, but I thought I should leave this here for you first.
+                </p>
+                <div class="cover-divider"></div>
+                <button type="button" class="primary-gold-btn" onclick="openNote()">
+                    <span>Read Note</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- STAGE 2: The Letter Experience -->
+        <article class="letter-container" id="letterScreen" aria-live="polite" style="display: none;">
+            <div class="letter-paper">
                 
-                <div id="adminPanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="m-0">👨💻 Engineer's Dashboard</h4>
-                        <button class="btn btn-sm btn-outline-danger" onclick="document.getElementById('adminPanel').style.display='none'">Close</button>
+                <div class="letter-header">
+                    <div class="letter-meta">
+                        <span>From Christopher</span>
+                        <span class="meta-separator">&mdash;</span>
+                        <span>To Gloria</span>
                     </div>
-                    <p class="text-muted">Live Database Feed:</p>
-                    <div id="adminMessages" style="max-height: 300px; overflow-y: auto; background: rgba(0,255,0,0.1); padding: 15px; border-radius: 5px;">Waiting for data...</div>
+                    <div class="reading-progress-track" aria-hidden="true">
+                        <div class="reading-progress-bar" id="readingProgressBar"></div>
+                    </div>
                 </div>
 
-                <div class="mood-container glass-panel" id="moodModule">
-                    <h5 class="fw-bold mb-3" id="moodTitle">How is my Princess feeling today?</h5>
-                    <div id="moodButtons">
-                        <button class="mood-btn" style="background: #ffdb00; color: #000;" onclick="setMood('high')">🌟 High Energy</button>
-                        <button class="mood-btn" style="background: #c084fc; color: #fff;" onclick="setMood('low')">🥺 I need to rest</button>
+                <div class="letter-body" id="letterBody">
+                    <!-- Paragraph 1 -->
+                    <div class="letter-passage is-visible" data-step="1">
+                        <p class="dropcap-paragraph">
+                            I very much wanted to talk to you on phone, but felt like it would be very awkward, so I decided to use this approach.
+                        </p>
                     </div>
-                    <p id="moodFeedback" class="mt-3 mb-0"></p>
-                </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        <div class="spiritual-card glass-panel">
-                            <h5 class="fw-bold mb-2" style="color: var(--accent-color);">🕊️ Daily Spiritual Connection</h5>
-                            <p class="small text-muted mb-3" id="spiritualSubtext">Take a moment to center yourself and hear what the Word says today.</p>
-                            <button id="openVerseBtn" class="btn btn-outline-light rounded-pill px-5 py-2 fw-bold" onclick="openVerseModal()" style="border-color: var(--accent-color);">
-                                Open Today's Word
-                            </button>
+                    <!-- Paragraph 2 -->
+                    <div class="letter-passage" data-step="2">
+                        <p>
+                            I would be lying if I said that you wake up and move away from a two year relationship, unless it meant absolutely nothing, which wasn't the case in our scenario.
+                        </p>
+                    </div>
+
+                    <!-- Paragraph 3 -->
+                    <div class="letter-passage" data-step="3">
+                        <p>
+                            I have reached out because I was the one that pulled the trigger to suggest the hardest thing our relationship could face. I read through our heated conversation for a minute, and again and again and again and again, and despite the bare facts that were stated in there, there was still a sense of people that are not tired of each other, but people that are in a life crisis.
+                        </p>
+                    </div>
+
+                    <!-- Paragraph 4 (Editorial Pull-Quote Centerpiece) -->
+                    <div class="letter-passage" data-step="4">
+                        <p class="quiet-reflection">
+                            These past few days have been sad, and quiet.
+                        </p>
+                        <blockquote class="raw-quote">
+                            &ldquo;Ahh fuck it, I ain't Shakespeare, but let us work out something.&rdquo;
+                        </blockquote>
+                    </div>
+
+                    <!-- Paragraph 5 (Closing & Call Invitation) -->
+                    <div class="letter-passage" data-step="5">
+                        <p>
+                            After reading this, and you feel the way I feel, the loneliness from the past few days, please call me, I'll be waiting to hear from you.
+                        </p>
+                        <p class="closing-line">
+                            Our relationship has not been here before, it's a big test. I hope we can mend it.
+                        </p>
+                        <div class="signature-block">
+                            <span class="signature-line"></span>
+                            <span class="signature-name">Christopher</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="row justify-content-center">
-                    <div class="col-12 col-lg-10">
-                        <div class="economy-card text-center glass-panel" id="economyCard">
-                            <h4 style="text-transform: uppercase; font-weight: 800; opacity: 0.8; letter-spacing: 1px;">👑 The Royal Treasury</h4>
-                            <div class="coin-balance" id="coinDisplay">...</div>
-                            <p class="fst-italic mb-4">Gloria Coins</p>
-
-                            <div class="row g-4 text-start mt-2">
-                                <div class="col-12 col-md-6" id="tasksList">
-                                    <h5 class="fw-bold mb-3">✨ Daily Tasks</h5>
-                                    <button class="btn task-btn earn-btn" id="btnWater" onclick="claimWater()">
-                                        <span>💧 Drank my water</span><span class="coin-badge">+10</span>
-                                    </button>
-                                    <div id="dynamicTasks">
-                                        <button class="btn task-btn earn-btn" onclick="openInputModal('Academic Update', 20)">
-                                            <span>📚 Academic update</span><span class="coin-badge">+20</span>
-                                        </button>
-                                    </div>
-                                    <button class="btn task-btn earn-btn" onclick="openInputModal('Emotional Check-in', 25)">
-                                        <span>❤️ Tell him how I feel</span><span class="coin-badge">+25</span>
-                                    </button>
-                                </div>
-
-                                <div class="col-12 col-md-6" id="shopList">
-                                    <h5 class="fw-bold mb-3">🛍️ The Princess Shop</h5>
-                                    <button class="btn task-btn spend-btn" onclick="spendCoins(100, 'Custom Voice Note')">
-                                        <span>🎙️ Demand a Voice Note</span><span class="coin-badge shop-price" data-base="100">-100</span>
-                                    </button>
-                                    <button class="btn task-btn spend-btn" onclick="spendCoins(300, 'Pick the Movie')">
-                                        <span>🍿 I pick the movie tonight</span><span class="coin-badge shop-price" data-base="300">-300</span>
-                                    </button>
-                                    <button class="btn task-btn spend-btn" onclick="spendCoins(500, 'Free Request')">
-                                        <span>🧞♀️ One Custom Favor</span><span class="coin-badge shop-price" data-base="500">-500</span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="gloria-modal" id="verseModal">
-                <div class="gloria-modal-content">
-                    <h5 class="fw-bold mb-3" style="color: var(--accent-color);">Your Daily Verse 📖</h5>
-                    <p class="verse-text" id="verseText">Opening the Word...</p>
-                    <p class="small text-muted mb-4">Take a deep breath and dwell on this for a moment.</p>
-                    <button class="btn btn-secondary w-100 fw-bold rounded-pill" id="claimVerseBtn" disabled onclick="claimVerse()">
-                        Meditating... (Wait 15s)
+                <!-- Interactive Pacing Control (shown until all passages are revealed) -->
+                <div class="step-controls" id="stepControls">
+                    <button type="button" class="continue-btn" id="continueBtn" onclick="nextPassage()">
+                        <span id="continueBtnText">Continue reading</span>
+                        <span class="continue-indicator" id="stepCounter">1 / 5</span>
                     </button>
-                    <button class="btn btn-link text-muted mt-2" onclick="closeModal('verseModal')">Close</button>
+                    <button type="button" class="skip-pacing-btn" onclick="revealAllParagraphs()">
+                        Show full note at once
+                    </button>
                 </div>
-            </div>
 
-            <div class="gloria-modal" id="inputModal">
-                <div class="gloria-modal-content">
-                    <h5 class="fw-bold mb-3" id="inputTitle" style="color: var(--accent-color);">Send Update</h5>
-                    <textarea id="taskInput" placeholder="Type here... (Write at least 2 words to earn your coins!)"></textarea>
-                    <p id="wordCountErr" class="text-danger small fw-bold" style="display:none;">Just a little more! Give me at least 2 words. ❤️</p>
-                    <button class="btn btn-success w-100 fw-bold rounded-pill" onclick="submitTextTask()">Send to Christopher</button>
-                    <button class="btn btn-link text-muted mt-2" onclick="closeModal('inputModal')">Cancel</button>
-                </div>
-            </div>
+                <!-- Final Call-To-Action Panel (Revealed on final passage) -->
+                <div class="response-panel" id="responsePanel">
+                    <div class="waiting-status">
+                        <span class="pulse-dot"></span>
+                        <span>I'll be waiting to hear from you</span>
+                    </div>
 
-            <div class='container py-5 text-center'>
-                <h2 class='mb-4'>Our Tune🎼</h2>
-                <div class='row justify-content-center'>
-                    <div class='col-12 col-md-8'>
-                        <div class='ratio ratio-16x9 rounded overflow-hidden shadow' style='border: 2px solid var(--accent-color);'>
-                            <iframe src='https://www.youtube.com/embed/q7mlB-adMBc' allowfullscreen></iframe>
-                        </div>
-                        <a href='#' class='btn btn-success rounded-pill mt-4 px-4 fw-bold'>🎵 Open on Spotify</a>
+                    <div class="cta-group">
+                        <a href="tel:+256761417053" class="primary-gold-btn call-btn" onclick="recordAction('Tapped Call Christopher')">
+                            <span>Call Me</span>
+                        </a>
+                        <a href="https://wa.me/256761417053?text=Hey%2C%20I%20just%20read%20your%20note." target="_blank" rel="noopener" class="secondary-outline-btn" onclick="recordAction('Tapped WhatsApp Message')">
+                            <span>Write to Me Instead</span>
+                        </a>
                     </div>
                 </div>
-            </div>
 
-            <div class='container py-5'>
-                <h2 class='text-center mb-4'>Our Journey</h2>
-                <div class='journey-container'>
-                    <div class='journey-item left'>
-                        <div class='journey-frame glass-panel'><img src='media/Together_1.jpeg'><div class='p-3'><h5>The first Smile</h5><p class='small m-0'>Every journey starts with a moment that takes your breath away.</p></div></div>
-                    </div>
-                    <div class='journey-item right'>
-                        <div class='journey-frame glass-panel'><img src='media/Together_2.jpeg'><div class='p-3'><h5>Unforgettable memory</h5><p class='small m-0'>Still think we should hang it in the Louvre😮💨</p></div></div>
-                    </div>
-                    <div class='journey-item left'>
-                        <div class='journey-frame glass-panel'><img src='media/Gloria_3.jpeg'><div class='p-3'><h5>A special day🍰</h5><p class='small m-0'>In every look, there's a story of elegance and strength.</p></div></div>
-                    </div>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- =========================================================================
+         DISABLED LEGACY SECTIONS (Inert <template> — zero network/render cost on iOS)
+         ========================================================================= -->
+    <template id="disabled-legacy-sections">
+        <div id="memorySidebar">
+            <div class="gallery-container-inner">
+                <h3 class="mb-3">Our Memories</h3>
+                <div class="d-flex w-100 gap-2 mb-4 justify-content-center">
+                    <button type="button" id="tabImages" class="gallery-btn active" onclick="switchGalleryTab('image')">Pictures</button>
+                    <button type="button" id="tabVideos" class="gallery-btn" onclick="switchGalleryTab('video')">Videos</button>
                 </div>
+                <audio id="slideshowAudio" src="media/Until_i_found_you.mp3" crossorigin="anonymous" preload="none" loop></audio>
+                <div id="gallery-media-container"></div>
             </div>
-
-            <div class='container pb-5'>
-                <h2 class='text-center mb-4'>Gloria Veronica, Hold on to this!</h2>
-                <div class='row g-3'>
-                    <div class='col-12 col-md-4'>
-                        <div class='flip-card' onclick='handleAffirmationClick(this)'>
-                            <div class='flip-card-inner'>
-                                <div class='flip-card-front glass-panel'><h3>Secret Message</h3><p class='small'>Tap to reveal</p></div>
-                                <div class='flip-card-back'><p id='affirmationText' class='fw-bold'></p></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-12 col-md-4'>
-                        <div class='flip-card' onclick='toggleVideoFlip(this)'>
-                            <div class='flip-card-inner'>
-                                <div class='flip-card-front glass-panel'><img src='media/Gloria_1.jpeg' style='width:100%; height:100%; object-fit:cover; border-radius:15px;'></div>
-                                <div class='flip-card-back'><video id='reelVideo' src='media/The_reel.mp4' loop playsinline style='width:100%; height:100%; object-fit:cover; border-radius:15px;'></video></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class='col-12 col-md-4'>
-                        <div class='flip-card' onclick='handlePraiseClick(this)'>
-                            <div class='flip-card-inner'>
-                                <div class='flip-card-front glass-panel'><h3>Praises for You</h3><p class='small'>Don't blush, just tap</p></div>
-                                <div class='flip-card-back'><p id='praiseText' class='fw-bold text-center'></p></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class='container text-center mb-5'>
-                <div class='game-card glass-panel'>
-                    <h3>💎 The Carat Challenge</h3>
-                    <p>Gloria, how many carats?</p>
-                    <input type='number' id='caratInput' class='game-input' placeholder=''>
-                    <br>
-                    <button class='btn btn-outline-danger' onclick='playCarat()'>Check!</button>
-                    <p id='gameFeedback' class='mt-3 fw-bold'></p>
-                </div>
-            </div>
-
-            <div class='love-section' id="loveSection">
-                <h2 class='love-question'>DO YOU LOVE THIS ?</h2>
-                <div class='d-flex justify-content-center gap-4 align-items-center' style="min-height: 120px;">
-                    <button class='btn btn-success btn-yes px-5 py-3 fw-bold' onclick="sendWhatsApp()">YES</button>
-                    <button id='noBtn' class='btn btn-danger px-5 py-3 fw-bold' onmouseover="moveButton()">NO</button>
-                </div>
-            </div>
-
         </div>
-    </div>
 
-    <!-- Scripts -->
+        <div class="hero">
+            <div class="hero-content">
+                <h1 class="gloria-text">Hello Gloria</h1>
+                <p class="spice-statement">Welcome to your space Gorgeous.</p>
+            </div>
+        </div>
+
+        <div class="sky-wrapper">
+            <div class="star-field" id="starField"></div>
+            <div class="content-overlay">
+                <div class="mood-container glass-panel" id="moodModule"></div>
+                <div class="spiritual-card glass-panel"></div>
+                <div class="economy-card text-center glass-panel" id="economyCard">
+                    <div class="coin-balance" id="coinDisplay">...</div>
+                </div>
+                <div class="journey-container"></div>
+                <div class="game-card glass-panel"></div>
+                <div class="love-section" id="loveSection"></div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Scripts (Deferred / Non-blocking for instant iOS startup) -->
     <script type="module" src="firebase-config.js"></script>
-    <script src="app.js"></script>
+    <script src="app.js" defer></script>
 </body>
 </html>

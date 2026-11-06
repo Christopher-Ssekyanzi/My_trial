@@ -16,7 +16,10 @@ const coinsRef = ref(db, 'gloria_coins');
 const messagesRef = ref(db, 'gloria_messages');
 
 onValue(coinsRef, (snapshot) => {
-    document.getElementById('coinDisplay').innerText = snapshot.val() || 0;
+    const coinEl = document.getElementById('coinDisplay');
+    if (coinEl) {
+        coinEl.innerText = snapshot.val() || 0;
+    }
 });
 
 window.dbRunTransaction = function(amount) {
